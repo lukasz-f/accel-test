@@ -16,7 +16,40 @@ var main = new UI.Card({
   subtitleColor: 'indigo', // Named colors
   bodyColor: '#9a0036' // Hex colors
 });
-main.show();
+
+var wind = new UI.Window({
+  backgroundColor: 'black'
+});
+var rect = new UI.Rect({
+  size: new Vector2(10, 10),
+  backgroundColor: 'white'
+});
+var rectPos = rect.position()
+    .addSelf(wind.size())
+    .subSelf(rect.size())
+    .multiplyScalar(0.5);
+rect.position(rectPos);
+wind.add(rect);
+wind.show();
+
+wind.on('accelData', function(e) {
+  rectPosUpdate(e);
+  console.log('accelData in');
+});
+
+function rectPosUpdate(e) {
+  var verticalMove = e.accels[0].x/100;
+  var horizontalMove = -e.accels[0].y/100;
+  var rectMove = new Vector2(verticalMove, horizontalMove);
+  rectPos.addSelf(rectMove);
+}
+
+function rectMove() {
+  rect.position(rectPos);
+  console.log('rectMove in');
+  setTimeout(rectMove, 50);
+}
+setTimeout(rectMove, 50);
 
 main.on('accelData', function(e) {
   console.log('Accel data: ' + JSON.stringify(e.accels[0]));

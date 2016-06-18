@@ -4,18 +4,8 @@
  * This is where you write your app.
  */
 
-
 var UI = require('ui');
 var Vector2 = require('vector2');
-
-var main = new UI.Card({
-  title: 'Pebble.js',
-  icon: 'images/menu_icon.png',
-  subtitle: 'Hello World!',
-  body: 'Press any button.',
-  subtitleColor: 'indigo', // Named colors
-  bodyColor: '#9a0036' // Hex colors
-});
 
 var wind = new UI.Window({
   backgroundColor: 'black'
@@ -28,7 +18,7 @@ var rectPos = rect.position()
     .addSelf(wind.size())
     .subSelf(rect.size())
     .multiplyScalar(0.5);
-rect.position(rectPos);
+rectPosition();
 wind.add(rect);
 wind.show();
 
@@ -44,46 +34,13 @@ function rectPosUpdate(e) {
   rectPos.addSelf(rectMove);
 }
 
-function rectMove() {
+function rectPosition() {
   rect.position(rectPos);
-  console.log('rectMove in');
-  setTimeout(rectMove, 50);
+  console.log('rectPosition in');
+  setTimeout(rectPosition, 50);
 }
-setTimeout(rectMove, 50);
 
-main.on('accelData', function(e) {
-  console.log('Accel data: ' + JSON.stringify(e.accels[0]));
-  var verticalDirection = e.accels[0].x > 0 ? 'right' : 'left';
-  var verticalSpeed = Math.round(Math.abs(e.accels[0].x/100));
-  var horizontalDirection = e.accels[0].y > 0 ? 'up' : 'down';
-  var horizontalSpeed = Math.round(Math.abs(e.accels[0].y/100));
-  main.body(verticalDirection + 'x' + verticalSpeed + ' ' + horizontalDirection + 'x' + horizontalSpeed);
-});
-
-main.on('click', 'up', function(e) {
-  var menu = new UI.Menu({
-    sections: [{
-      items: [{
-        title: 'Pebble.js',
-        icon: 'images/menu_icon.png',
-        subtitle: 'Can do Menus'
-      }, {
-        title: 'Second Item',
-        subtitle: 'Subtitle Text'
-      }, {
-        title: 'Third Item',
-      }, {
-        title: 'Fourth Item',
-      }]
-    }]
-  });
-  menu.on('select', function(e) {
-    console.log('Selected item #' + e.itemIndex + ' of section #' + e.sectionIndex);
-    console.log('The item is titled "' + e.item.title + '"');
-  });
-  menu.show();
-});
-
+/*
 main.on('click', 'select', function(e) {
   var wind = new UI.Window({
     backgroundColor: 'black'
@@ -120,11 +77,4 @@ main.on('click', 'select', function(e) {
   wind.add(textfield);
   wind.show();
 });
-
-main.on('click', 'down', function(e) {
-  var card = new UI.Card();
-  card.title('A Card');
-  card.subtitle('Is a Window');
-  card.body('The simplest window type in Pebble.js.');
-  card.show();
-});
+*/

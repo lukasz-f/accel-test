@@ -33,6 +33,9 @@
     },
     "sdkVersion": "3",
     "shortName": "accel-test",
+    "targetPlatforms": [
+        "aplite"
+    ],
     "uuid": "5b6c7be8-4b65-4556-84c1-08faa26fd468",
     "versionCode": 1,
     "versionLabel": "1.0",

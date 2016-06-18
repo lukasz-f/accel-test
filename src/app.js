@@ -4,6 +4,7 @@
  * This is where you write your app.
  */
 
+
 var UI = require('ui');
 var Vector2 = require('vector2');
 
@@ -15,8 +16,16 @@ var main = new UI.Card({
   subtitleColor: 'indigo', // Named colors
   bodyColor: '#9a0036' // Hex colors
 });
-
 main.show();
+
+main.on('accelData', function(e) {
+  console.log('Accel data: ' + JSON.stringify(e.accels[0]));
+  var verticalDirection = e.accels[0].x > 0 ? 'right' : 'left';
+  var verticalSpeed = Math.round(Math.abs(e.accels[0].x/100));
+  var horizontalDirection = e.accels[0].y > 0 ? 'up' : 'down';
+  var horizontalSpeed = Math.round(Math.abs(e.accels[0].y/100));
+  main.body(verticalDirection + 'x' + verticalSpeed + ' ' + horizontalDirection + 'x' + horizontalSpeed);
+});
 
 main.on('click', 'up', function(e) {
   var menu = new UI.Menu({

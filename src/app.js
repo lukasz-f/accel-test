@@ -6,6 +6,12 @@
 
 var UI = require('ui');
 var Vector2 = require('vector2');
+var Accel = require('ui/accel');
+
+Accel.config({
+  rate: 100,
+  samples: 20
+});
 
 var wind = new UI.Window({
   backgroundColor: 'black'
@@ -14,6 +20,7 @@ var rect = new UI.Rect({
   size: new Vector2(10, 10),
   backgroundColor: 'white'
 });
+var rectVect = new Vector2();
 var rectPos = rect.position()
     .addSelf(wind.size())
     .subSelf(rect.size())
@@ -30,11 +37,11 @@ wind.on('accelData', function(e) {
 function rectPosUpdate(e) {
   var verticalMove = e.accels[0].x/100;
   var horizontalMove = -e.accels[0].y/100;
-  var rectMove = new Vector2(verticalMove, horizontalMove);
-  rectPos.addSelf(rectMove);
+  rectVect.set(verticalMove, horizontalMove);
 }
 
 function rectPosition() {
+  rectPos.addSelf(rectVect);
   rect.position(rectPos);
   console.log('rectPosition in');
   setTimeout(rectPosition, 50);
@@ -78,3 +85,4 @@ main.on('click', 'select', function(e) {
   wind.show();
 });
 */
+//simply.impl.accelConfig(Accel.config());

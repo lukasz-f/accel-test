@@ -28,6 +28,16 @@
                 "file": "fonts/UbuntuMono-Regular.ttf",
                 "name": "MONO_FONT_14",
                 "type": "font"
+            },
+            {
+                "file": "images/fish-left-14x7-1.png",
+                "name": "IMAGES_FISH_LEFT_14X7_1_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish-right-14x7-1.png",
+                "name": "IMAGES_FISH_RIGHT_14X7_1_PNG",
+                "type": "bitmap"
             }
         ]
     },

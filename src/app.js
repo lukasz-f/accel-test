@@ -1,9 +1,3 @@
-/**
- * Welcome to Pebble.js!
- *
- * This is where you write your app.
- */
-
 var UI = require('ui');
 var Vector2 = require('vector2');
 var Accel = require('ui/accel');
@@ -16,6 +10,18 @@ Accel.config({
 var wind = new UI.Window({
   backgroundColor: 'black'
 });
+var fishListImage = [new UI.Image({ size: new Vector2(12, 6), image: 'images/fish1-12x6-right.png'}),
+                    new UI.Image({ size: new Vector2(14, 7), image: 'images/fish1-14x7-right.png'}),
+                    new UI.Image({ size: new Vector2(16, 8), image: 'images/fish1-16x8-right.png'}),
+                    new UI.Image({ size: new Vector2(28, 14), image: 'images/fish1-28x14-right.png'})];
+var fishListVector = [new Vector2(0.5, 0),
+                     new Vector2(1, 0),
+                     new Vector2(1.5, 0),
+                     new Vector2(2, 0)];
+var fishListPosition = [new Vector2(0,30),
+                       new Vector2(0, 60),
+                       new Vector2(0, 90),
+                       new Vector2(0, 120)];
 var fishImage = new UI.Image({
   size: new Vector2(14, 7)
 });
@@ -24,26 +30,35 @@ var fishPosition = fishImage.position()
     .addSelf(wind.size())
     .subSelf(fishImage.size())
     .multiplyScalar(0.5);
-fishUpdate();
 wind.add(fishImage);
+for (var i = 0; i < fishListImage.length; ++i) {
+  wind.add(fishListImage[i]);
+}
+worldUpdate();
 wind.show();
 
 wind.on('accelData', function(e) {
   fishVectorUpdate(e);
-  console.log('accelData');
+  //console.log('accelData');
 });
 
 function fishVectorUpdate(e) {
+  //TODO check vector length
   var verticalMove = e.accels[0].x/300;
   var horizontalMove = -e.accels[0].y/300;
   fishVector.set(verticalMove, horizontalMove);
 }
 
+function worldUpdate() {
+  fishUpdate();
+  fishListUpdate();
+  setTimeout(worldUpdate, 50);
+  //console.log('worldUpdate');
+}
+
 function fishUpdate() {
   fishPositionUpdate();
   fishImageUpdate();
-  console.log('fishUpdate');
-  setTimeout(fishUpdate, 50);
 }
 
 function fishPositionUpdate() {
@@ -55,54 +70,23 @@ function fishPositionUpdate() {
 function checkFishPositionInsideScreen() {
   if (fishPosition.x < 0) fishPosition.x = 0;
   if (fishPosition.y < 0) fishPosition.y = 0;
-  if (fishPosition.x > wind.size().x) fishPosition.x = wind.size().x;
-  if (fishPosition.y > wind.size().y) fishPosition.y = wind.size().y;
+  if (fishPosition.x + fishImage.size().x > wind.size().x) fishPosition.x = wind.size().x - fishImage.size().x;
+  if (fishPosition.y + fishImage.size().y > wind.size().y) fishPosition.y = wind.size().y - fishImage.size().y;
 }
 
 function fishImageUpdate() {
+  //TODO check direction chenged
   if (fishVector.x > 0) {
-    fishImage.image('images/fish-right-14x7-1.png');
+    fishImage.image('images/fish1-14x7-right.png');
   } else if (fishVector.x < 0) {
-    fishImage.image('images/fish-left-14x7-1.png');
+    fishImage.image('images/fish1-14x7-left.png');
   }
 }
 
-/*
-main.on('click', 'select', function(e) {
-  var wind = new UI.Window({
-    backgroundColor: 'black'
-  });
-  var radial = new UI.Radial({
-    size: new Vector2(140, 140),
-    angle: 0,
-    angle2: 300,
-    radius: 20,
-    backgroundColor: 'cyan',
-    borderColor: 'celeste',
-    borderWidth: 1,
-  });
-  var textfield = new UI.Text({
-    size: new Vector2(140, 60),
-    font: 'gothic-24-bold',
-    text: 'Dynamic\nWindow',
-    textAlign: 'center'
-  });
-  var windSize = wind.size();
-  // Center the radial in the window
-  var radialPos = radial.position()
-      .addSelf(windSize)
-      .subSelf(radial.size())
-      .multiplyScalar(0.5);
-  radial.position(radialPos);
-  // Center the textfield in the window
-  var textfieldPos = textfield.position()
-      .addSelf(windSize)
-      .subSelf(textfield.size())
-      .multiplyScalar(0.5);
-  textfield.position(textfieldPos);
-  wind.add(radial);
-  wind.add(textfield);
-  wind.show();
-});
-*/
-//simply.impl.accelConfig(Accel.config());
+function fishListUpdate() {
+  for (var i = 0; i < fishListImage.length; ++i) {
+    fishListPosition[i].addSelf(fishListVector[i]);
+    fishListImage[i].position(fishListPosition[i]);
+  }
+}
+

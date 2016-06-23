@@ -30,13 +30,43 @@
                 "type": "font"
             },
             {
-                "file": "images/fish-left-14x7-1.png",
-                "name": "IMAGES_FISH_LEFT_14X7_1_PNG",
+                "file": "images/fish1-28x14-right.png",
+                "name": "IMAGES_FISH1_28X14_RIGHT_PNG",
                 "type": "bitmap"
             },
             {
-                "file": "images/fish-right-14x7-1.png",
-                "name": "IMAGES_FISH_RIGHT_14X7_1_PNG",
+                "file": "images/fish1-28x14-left.png",
+                "name": "IMAGES_FISH1_28X14_LEFT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish1-16x8-right.png",
+                "name": "IMAGES_FISH1_16X8_RIGHT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish1-16x8-left.png",
+                "name": "IMAGES_FISH1_16X8_LEFT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish1-14x7-right.png",
+                "name": "IMAGES_FISH1_14X7_RIGHT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish1-14x7-left.png",
+                "name": "IMAGES_FISH1_14X7_LEFT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish1-12x6-right.png",
+                "name": "IMAGES_FISH1_12X6_RIGHT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/fish1-12x6-left.png",
+                "name": "IMAGES_FISH1_12X6_LEFT_PNG",
                 "type": "bitmap"
             }
         ]

@@ -10,20 +10,22 @@ Accel.config({
 var wind = new UI.Window({
   backgroundColor: 'black'
 });
-var fishListImage = [new UI.Image({ size: new Vector2(12, 6), image: 'images/fish1-12x6-right.png'}),
+var fishImageList = [new UI.Image({ size: new Vector2(12, 6), image: 'images/fish1-12x6-right.png'}),
                     new UI.Image({ size: new Vector2(14, 7), image: 'images/fish1-14x7-right.png'}),
                     new UI.Image({ size: new Vector2(16, 8), image: 'images/fish1-16x8-right.png'}),
                     new UI.Image({ size: new Vector2(28, 14), image: 'images/fish1-28x14-right.png'})];
-var fishListVector = [new Vector2(0.5, 0),
+var fishVectorList = [new Vector2(0.5, 0),
                      new Vector2(1, 0),
                      new Vector2(1.5, 0),
                      new Vector2(2, 0)];
-var fishListPosition = [new Vector2(0,30),
+var fishPositionList = [new Vector2(0,30),
                        new Vector2(0, 60),
                        new Vector2(0, 90),
                        new Vector2(0, 120)];
+
 var fishImage = new UI.Image({
-  size: new Vector2(14, 7)
+  size: new Vector2(14, 7),
+  image: 'images/fish1-14x7-right.png'
 });
 var fishVector = new Vector2();
 var fishPosition = fishImage.position()
@@ -31,8 +33,8 @@ var fishPosition = fishImage.position()
     .subSelf(fishImage.size())
     .multiplyScalar(0.5);
 wind.add(fishImage);
-for (var i = 0; i < fishListImage.length; ++i) {
-  wind.add(fishListImage[i]);
+for (var i = 0; i < fishImageList.length; ++i) {
+  wind.add(fishImageList[i]);
 }
 worldUpdate();
 wind.show();
@@ -75,18 +77,46 @@ function checkFishPositionInsideScreen() {
 }
 
 function fishImageUpdate() {
-  //TODO check direction chenged
-  if (fishVector.x > 0) {
-    fishImage.image('images/fish1-14x7-right.png');
-  } else if (fishVector.x < 0) {
-    fishImage.image('images/fish1-14x7-left.png');
-  }
+  //TODO check direction changed
+  changeDirectionImage(fishVector, fishImage);
 }
 
 function fishListUpdate() {
-  for (var i = 0; i < fishListImage.length; ++i) {
-    fishListPosition[i].addSelf(fishListVector[i]);
-    fishListImage[i].position(fishListPosition[i]);
+  fishPositionListUpdate();
+  fishImageListUpdate();
+}
+
+function fishPositionListUpdate() {
+  for (var i = 0; i < fishImageList.length; ++i) {
+    fishPositionList[i].addSelf(fishVectorList[i]);
+    fishImageList[i].position(fishPositionList[i]);
+  }
+  checkFishPositionListInsideScreen();
+}
+
+function checkFishPositionListInsideScreen() {
+  for (var i = 0; i < fishImageList.length; ++i) {
+    if (fishPositionList[i].x < 0) {
+      fishPositionList[i].x = 0;
+      fishVectorList[i].x = -fishVectorList[i].x;
+    } else if (fishPositionList[i].x + fishImageList[i].size().x > wind.size().x) {
+      fishPositionList[i].x = wind.size().x - fishImageList[i].size().x;
+      fishVectorList[i].x = -fishVectorList[i].x;
+    }
   }
 }
 
+function fishImageListUpdate() {
+  //TODO check direction changed
+  for (var i = 0; i < fishImageList.length; ++i) {
+    changeDirectionImage(fishVectorList[i], fishImageList[i]);
+  }
+}
+
+function changeDirectionImage(vector, image) {
+  if (vector.x > 0) {
+      image.image(image.image().replace('left', 'right'));
+    } else if (vector.x < 0) {
+      image.image(image.image().replace('right', 'left'));
+    }
+}

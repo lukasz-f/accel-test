@@ -10,9 +10,9 @@ Accel.config({
 var wind = new UI.Window({
   backgroundColor: 'black'
 });
-var fishImageList = [new UI.Image({ size: new Vector2(12, 6), image: 'images/fish1-12x6-left.png', position: new Vector2(0, 30)}),
-                    new UI.Image({ size: new Vector2(14, 7), image: 'images/fish1-14x7-left.png', position: new Vector2(0, 60)}),
-                    new UI.Image({ size: new Vector2(16, 8), image: 'images/fish1-16x8-left.png', position: new Vector2(0, 90)}),
+var fishImageList = [new UI.Image({ size: new Vector2(12, 6), image: 'images/fish1-12x6-right.png', position: new Vector2(0, 30)}),
+                    new UI.Image({ size: new Vector2(14, 7), image: 'images/fish1-14x7-right.png', position: new Vector2(0, 60)}),
+                    new UI.Image({ size: new Vector2(16, 8), image: 'images/fish1-16x8-right.png', position: new Vector2(0, 90)}),
                     new UI.Image({ size: new Vector2(28, 14), image: 'images/fish1-28x14-left.png', position: new Vector2(0, 120)})];
 var fishVectorList = [new Vector2(0.5, 0),
                      new Vector2(1, 0),
@@ -24,12 +24,10 @@ var fishImage = new UI.Image({
   image: 'images/fish1-14x7-right.png'
 });
 var fishVector = new Vector2();
-console.log('fishPos = ' + fishImage.position().x + ' ' + fishImage.position().y);
 fishImage.position()
     .addSelf(wind.size())
     .subSelf(fishImage.size())
     .multiplyScalar(0.5);
-console.log('fishPos = ' + fishImage.position().x + ' ' + fishImage.position().y);
 wind.add(fishImage);
 for (var i = 0; i < fishImageList.length; ++i) {
   wind.add(fishImageList[i]);
@@ -62,13 +60,9 @@ function fishUpdate() {
 }
 
 function fishPositionUpdate() {
-  fishImagePositionUpdateWithVector(fishImage, fishVector);
+  console.log('fishImage.position() = ' + fishImage.position().x + ' ' + fishImage.position().y);
+  fishImage.position().addSelf(fishVector);
   checkFishPositionInsideScreen();
-  fishImage.position(fishImage.position());
-}
-
-function fishImagePositionUpdateWithVector(image, vector) {
-  image.position().addSelf(vector);
 }
 
 function checkFishPositionInsideScreen() {
@@ -90,13 +84,13 @@ function fishListUpdate() {
 
 function fishPositionListUpdate() {
   for (var i = 0; i < fishImageList.length; ++i) {
-    fishImagePositionUpdateWithVector(fishImageList[i], fishVectorList[i]);
-    checkFishPositionListInsideScreen(i);
-    fishImageList[i].position(fishImageList[i].position());
+    fishImageList[i].position().addSelf(fishVectorList[i]);
   }
+  checkFishPositionListInsideScreen();
 }
 
-function checkFishPositionListInsideScreen(i) {
+function checkFishPositionListInsideScreen() {
+  for (var i = 0; i < fishImageList.length; ++i) {
     if (fishImageList[i].position().x < 0) {
       fishImageList[i].position().x = 0;
       fishVectorList[i].x = -fishVectorList[i].x;
@@ -104,6 +98,7 @@ function checkFishPositionListInsideScreen(i) {
       fishImageList[i].position().x = wind.size().x - fishImageList[i].size().x;
       fishVectorList[i].x = -fishVectorList[i].x;
     }
+  }
 }
 
 function fishImageListUpdate() {

@@ -54,6 +54,7 @@ function fishVectorUpdate(e) {
 function worldUpdate() {
   fishUpdate();
   fishListUpdate();
+  checkCollision();
   setTimeout(worldUpdate, 100);
   //console.log('worldUpdate');
 }
@@ -66,7 +67,6 @@ function fishUpdate() {
 function fishPositionUpdate() {
   fishPositionUpdateWithVector(fishPosition, fishVector);
   checkFishPositionInsideScreen();
-  fishImage.position(fishPosition);
 }
 
 function fishPositionUpdateWithVector(position, vector) {
@@ -81,8 +81,8 @@ function checkFishPositionInsideScreen() {
 }
 
 function fishImageUpdate() {
-  //TODO check direction changed
   changeDirectionImage(fishVector, fishImage);
+  fishImage.position(fishPosition);
 }
 
 function fishListUpdate() {
@@ -94,7 +94,6 @@ function fishPositionListUpdate() {
   for (var i = 0; i < fishImageList.length; ++i) {
     fishPositionUpdateWithVector(fishPositionList[i], fishVectorList[i]);
     checkFishPositionListInsideScreen(fishPositionList[i], fishVectorList[i], fishImageList[i]);
-    fishImageList[i].position(fishPositionList[i]);
   }
 }
 
@@ -109,16 +108,28 @@ function checkFishPositionListInsideScreen(position, vector, image) {
 }
 
 function fishImageListUpdate() {
-  //TODO check direction changed
   for (var i = 0; i < fishImageList.length; ++i) {
     changeDirectionImage(fishVectorList[i], fishImageList[i]);
+    fishImageList[i].position(fishPositionList[i]);
   }
 }
 
 function changeDirectionImage(vector, image) {
+  //TODO check direction changed
   if (vector.x > 0) {
       image.image(image.image().replace('left', 'right'));
     } else if (vector.x < 0) {
       image.image(image.image().replace('right', 'left'));
     }
+}
+
+function checkCollision() {
+  for (var i = 0; i < fishImageList.length; ++i) {
+    if (fishPosition.x < fishPositionList[i].x + fishImageList[i].size().x && 
+        fishPosition.x + fishImage.size().x > fishPositionList[i].x &&
+        fishPosition.y < fishPositionList[i].y + fishImageList[i].size().y && 
+        fishPosition.y + fishImage.size().y > fishPositionList[i].y) {
+      fishImageList[i].remove();
+    }
+  }
 }

@@ -7,6 +7,22 @@ Accel.config({
   samples: 20
 });
 
+var fps = {
+  startTime : 0,
+  frameNumber : 0,
+  getFPS : function(){
+    this.frameNumber++;		
+    var d = new Date().getTime(),			
+        currentTime = ( d - this.startTime ) / 1000,			
+        result = this.frameNumber / currentTime;		
+    if( currentTime > 1 ){			
+      this.startTime = new Date().getTime();			
+      this.frameNumber = 0;		
+    }		
+    return result;	
+  }	
+};
+
 var wind = new UI.Window({
   backgroundColor: 'black'
 });
@@ -55,7 +71,8 @@ function worldUpdate() {
   fishUpdate();
   fishListUpdate();
   setTimeout(worldUpdate, 50);
-  //console.log('worldUpdate');
+  
+  console.log('fps = ' + fps.getFPS());
 }
 
 function fishUpdate() {
